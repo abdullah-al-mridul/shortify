@@ -16,7 +16,8 @@ const server = express();
 // configure cors setup
 server.use(
   cors({
-    origin: "*",
+    // origin: "*",
+    credentials: true,
   })
 );
 
