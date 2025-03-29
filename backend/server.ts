@@ -8,9 +8,17 @@ import { Config } from "@constants/config";
 import { authRouter } from "@routes/auth.routes";
 import { logger } from "@logs/logger";
 import mongoose from "mongoose";
+import cors from "cors";
 
 // initializing the server
 const server = express();
+
+// configure cors setup
+server.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // configure database
 mongoose
