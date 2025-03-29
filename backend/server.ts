@@ -4,8 +4,9 @@ dotenv.config();
 
 // importing modules
 import express from "express";
-import { Config } from "./constants/config";
-import { authRouter } from "./routes/auth.routes";
+import { Config } from "@constants/config";
+import { authRouter } from "@routes/auth.routes";
+import { logger } from "@logs/logger";
 
 // initializing the server
 const server = express();
@@ -18,5 +19,5 @@ server.use(`${Config.API_ENDPOINT}/auth`, authRouter);
 
 // listening for request
 server.listen(Config.PORT, () => {
-  console.log(`Server is running at port ${Config.PORT}`);
+  logger.info(`Server is running at port ${Config.PORT}`);
 });
