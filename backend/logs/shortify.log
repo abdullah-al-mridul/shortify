@@ -1,0 +1,26 @@
+[29-03-2025__08:35 PM] info: Server is running at port 4173
+[29-03-2025__08:35 PM] info: Server is running at port 4173
+[29-03-2025__08:36 PM] info: Server is running at port 4173
+[29-03-2025__08:36 PM] info: Server is running at port 4173
+[29-03-2025__08:37 PM] info: Server is running at port 4173
+[29-03-2025__08:37 PM] info: Server is running at port 4173
+[29-03-2025__08:39 PM] info: Server is running at port 4173
+[29-03-2025__08:40 PM] info: Server is running at port 4173
+[29-03-2025__08:41 PM] info: Server is running at port 4173
+[29-03-2025__08:41 PM] info: Connected to database
+[29-03-2025__08:42 PM] info: Server is running at port 4173
+[29-03-2025__08:42 PM] info: Connected to database
+[29-03-2025__08:42 PM] info: Server is running at port 4173
+[29-03-2025__08:42 PM] info: Connected to database
+[29-03-2025__08:43 PM] info: Server is running at port 4173
+[29-03-2025__08:43 PM] error: Failed connecting to the database - MongoServerError: bad auth : authentication failed
+[29-03-2025__08:43 PM] info: Server is running at port 4173
+[29-03-2025__08:43 PM] error: Failed connecting to the database - MongoServerError: bad auth : authentication failed
+[29-03-2025__08:44 PM] info: Server is running at port 4173
+[29-03-2025__08:44 PM] info: Connected to database
+[29-03-2025__08:45 PM] info: Server is running at port 4173
+[29-03-2025__08:45 PM] info: Connected to database
+[29-03-2025__08:45 PM] info: Server is running at port 4173
+[29-03-2025__08:45 PM] error: Failed connecting to the database - bad auth : authentication failed
+[29-03-2025__08:45 PM] info: Server is running at port 4173
+[29-03-2025__08:45 PM] info: Connected to database
