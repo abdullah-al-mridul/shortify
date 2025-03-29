@@ -9,6 +9,7 @@ import { authRouter } from "@routes/auth.routes";
 import { logger } from "@logs/logger";
 import mongoose from "mongoose";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 // initializing the server
 const server = express();
@@ -16,10 +17,13 @@ const server = express();
 // configure cors setup
 server.use(
   cors({
-    // origin: "*",
+    origin: true,
     credentials: true,
   })
 );
+
+// add cookie parser middleware
+server.use(cookieParser());
 
 // configure database
 mongoose
@@ -36,6 +40,16 @@ server.use(express.json());
 
 // adding routers to the server
 server.use(`${Config.API_ENDPOINT}/auth`, authRouter);
+
+server.get("/", (req, res) => {
+  res.cookie("auth_token", "dfdf", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "none",
+    maxAge: 1000 * 60 * 60 * 24,
+  });
+  res.send("hi");
+});
 
 // listening for request
 server.listen(Config.PORT, () => {

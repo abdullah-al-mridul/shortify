@@ -11,11 +11,30 @@ const express_1 = __importDefault(require("express"));
 const config_1 = require("./constants/config");
 const auth_routes_1 = require("./routes/auth.routes");
 const logger_1 = require("./logs/logger");
+const mongoose_1 = __importDefault(require("mongoose"));
+const cors_1 = __importDefault(require("cors"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 // initializing the server
 const server = (0, express_1.default)();
+// configure cors setup
+server.use((0, cors_1.default)({
+    origin: true,
+    credentials: true,
+}));
+// add cookie parser middleware
+server.use((0, cookie_parser_1.default)());
+// configure database
+mongoose_1.default
+    .connect(config_1.Config.MONGOOSE_URI)
+    .then(() => {
+    logger_1.logger.info("Connected to database");
+})
+    .catch((err) => {
+    logger_1.logger.error(`Failed connecting to the database - ${err.message}`);
+});
 // configure server to parse json body
 server.use(express_1.default.json());
-// adding routes to the server
+// adding routers to the server
 server.use(`${config_1.Config.API_ENDPOINT}/auth`, auth_routes_1.authRouter);
 // listening for request
 server.listen(config_1.Config.PORT, () => {

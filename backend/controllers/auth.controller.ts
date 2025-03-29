@@ -86,22 +86,17 @@ const registerController = async (
     delete userPayload.password;
 
     // create token
-    jwt.sign(userPayload, Config.JWT_SECRET, function (err, token) {
-      if (!err) {
-        // set token to response cookie
-        res.cookie("auth_token", token, {
-          httpOnly: true,
-          secure: false,
-          sameSite: "none",
-          maxAge: 1000 * 60 * 60 * 24,
-        });
-      } else {
-        // log on error
-        logger.info(
-          `Failed creation of token for user ${userPayload.email} - ${err.message}`
-        );
-      }
-    });
+    const token: string = jwt.sign(userPayload, Config.JWT_SECRET);
+
+    // set token to the response cookie
+    if (token) {
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+    }
 
     // send res
     res.status(200).json({
