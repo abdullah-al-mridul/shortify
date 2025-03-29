@@ -25,7 +25,7 @@ mongoose
 // configure server to parse json body
 server.use(express.json());
 
-// adding routes to the server
+// adding routers to the server
 server.use(`${Config.API_ENDPOINT}/auth`, authRouter);
 
 // listening for request
