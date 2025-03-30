@@ -3,7 +3,7 @@ import winston from "winston";
 import moment from "moment";
 import path from "path";
 
-// log history file path to use for logging
+// log history file path
 const logFilePath: string = path.join(__dirname, "shortify.log");
 
 // create logger for better logging
