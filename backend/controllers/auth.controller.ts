@@ -26,6 +26,18 @@ interface ApiResponse {
   data?: object;
 }
 
+// declaring type for user in request
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        name: string;
+        email: string;
+      };
+    }
+  }
+}
+
 // controller for user register
 const registerController = async (
   req: Request,
@@ -208,10 +220,30 @@ const loginController = async (req: Request, res: Response): Promise<void> => {
 };
 
 // controller for check auth
-const checkAuth = async (req: Request, res: Response): Promise<void> => {
+const checkAuthController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-  } catch (error) {}
+    // get user from request
+    const { user } = req;
+
+    // create response
+    const response: ApiResponse = {
+      success: true,
+      message: "User founded",
+      data: user,
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    logger.info(`Server error - ${error}`);
+    const response: ApiResponse = {
+      success: false,
+      message: "Internal Server Failure",
+    };
+    res.status(401).json(response);
+  }
 };
 
 // exporting for external use
-export { registerController, loginController, checkAuth };
+export { registerController, loginController, checkAuthController };

@@ -3,6 +3,7 @@ import express from "express";
 import {
   registerController,
   loginController,
+  checkAuthController,
 } from "@controllers/auth.controller";
 import { authenticated } from "middlewares/auth.middleware";
 
@@ -16,7 +17,7 @@ authRouter.post("/register", registerController);
 authRouter.post("/login", loginController);
 
 // route for auth check
-authRouter.get("/me", authenticated);
+authRouter.get("/me", authenticated, checkAuthController);
 
 // exporting the router for external use
 export { authRouter };
