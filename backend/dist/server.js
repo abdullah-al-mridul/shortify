@@ -36,6 +36,15 @@ mongoose_1.default
 server.use(express_1.default.json());
 // adding routers to the server
 server.use(`${config_1.Config.API_ENDPOINT}/auth`, auth_routes_1.authRouter);
+server.get("/", (req, res) => {
+    res.cookie("auth_token", "dfdf", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24,
+    });
+    res.send("hi");
+});
 // listening for request
 server.listen(config_1.Config.PORT, () => {
     logger_1.logger.info(`Server is running at port ${config_1.Config.PORT}`);

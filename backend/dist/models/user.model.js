@@ -31,9 +31,7 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    links: {
-        type: [Object],
-    },
+    links: { type: [{ url: String }] },
 }, {
     timestamps: true,
 });
@@ -49,9 +47,9 @@ userSchema.pre("save", function (next) {
     });
 });
 // mathod for compare password
-userSchema.methods.comparePassword = function (hashedPassword) {
+userSchema.methods.comparePassword = function (userPassword) {
     return __awaiter(this, void 0, void 0, function* () {
-        return bcryptjs_1.default.compare(hashedPassword, this.password);
+        return yield bcryptjs_1.default.compare(userPassword, this.password);
     });
 };
 // creating exact model for user

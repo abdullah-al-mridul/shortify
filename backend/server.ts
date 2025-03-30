@@ -10,6 +10,7 @@ import { logger } from "@logs/logger";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { linkRouter } from "@routes/links.routes";
 
 // initializing the server
 const server = express();
@@ -39,17 +40,10 @@ mongoose
 server.use(express.json());
 
 // adding routers to the server
+// auth router
 server.use(`${Config.API_ENDPOINT}/auth`, authRouter);
-
-server.get("/", (req, res) => {
-  res.cookie("auth_token", "dfdf", {
-    httpOnly: true,
-    secure: false,
-    sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24,
-  });
-  res.send("hi");
-});
+// links router
+server.use(`${Config.API_ENDPOINT}/links`, linkRouter);
 
 // listening for request
 server.listen(Config.PORT, () => {
