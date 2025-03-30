@@ -7,7 +7,6 @@ interface User extends Document {
   name: string;
   email: string;
   password: string;
-  links: object[];
   comparePassword: (hashedPassword: string) => Promise<boolean>;
 }
 
@@ -27,7 +26,6 @@ const userSchema = new Schema<User>(
       type: String,
       required: true,
     },
-    links: { type: [{ url: String }] },
   },
   {
     timestamps: true,
