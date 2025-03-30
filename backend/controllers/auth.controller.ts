@@ -19,6 +19,13 @@ interface RegisterReq extends LoginReq {
   name: string;
 }
 
+// interface for api response
+interface ApiResponse {
+  success: boolean;
+  message?: string;
+  data?: object;
+}
+
 // controller for user register
 const registerController = async (
   req: Request,
@@ -114,5 +121,91 @@ const registerController = async (
   }
 };
 
+// controller for user login
+const loginController = async (req: Request, res: Response): Promise<void> => {
+  // get email and password from request
+  const { email, password }: LoginReq = req.body;
+
+  // validate if all field available
+  if (!(email && password)) {
+    res.status(400).json({
+      success: false,
+      message: "Missing request field",
+    });
+    return;
+  } else {
+    // check if email is valid
+    if (!emailRegex.test(email)) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid Email",
+      });
+      return;
+    }
+
+    // check if password minimum 6 character
+    else if (password.length < 6) {
+      res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 character",
+      });
+      return;
+    }
+  }
+
+  // find the user
+  const ifUserExist = await User.findOne({ email });
+
+  // check if user founded
+  if (ifUserExist) {
+    // user payload
+    const userPayload = { name: ifUserExist.name, email: ifUserExist.email };
+
+    // check if password correct
+    const isPasswordCorrect = await ifUserExist.comparePassword(password);
+
+    // send unauthorized response if password incorrect
+    if (!isPasswordCorrect) {
+      // create response payload
+      const response: ApiResponse = {
+        success: false,
+        message: "Incorrect credential",
+      };
+
+      // send response
+      res.status(400).json(response);
+      return;
+    }
+
+    // create token for user
+    const token = jwt.sign(userPayload, Config.JWT_SECRET);
+
+    // set token to response cookie
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+
+    // response payload
+    const response: ApiResponse = {
+      success: true,
+      message: "Login Successfull",
+      data: userPayload,
+    };
+
+    // send success response
+    res.status(200).json(response);
+  } else {
+    // send not found response if user not found
+    const response: ApiResponse = {
+      success: false,
+      message: "User not found",
+    };
+    res.status(404).json(response);
+  }
+};
+
 // exporting for external use
-export { registerController };
+export { registerController, loginController };

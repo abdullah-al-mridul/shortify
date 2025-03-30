@@ -27,9 +27,7 @@ const userSchema = new Schema<User>(
       type: String,
       required: true,
     },
-    links: {
-      type: [Object],
-    },
+    links: { type: [{ url: String }] },
   },
   {
     timestamps: true,
@@ -47,8 +45,10 @@ userSchema.pre<User>("save", async function (next) {
 });
 
 // mathod for compare password
-userSchema.methods.comparePassword = async function (hashedPassword: string) {
-  return bcrypt.compare(hashedPassword, this.password);
+userSchema.methods.comparePassword = async function (
+  userPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(userPassword, this.password);
 };
 
 // creating exact model for user
