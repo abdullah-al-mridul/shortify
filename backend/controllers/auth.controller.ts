@@ -207,5 +207,11 @@ const loginController = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// controller for check auth
+const checkAuth = async (req: Request, res: Response): Promise<void> => {
+  try {
+  } catch (error) {}
+};
+
 // exporting for external use
-export { registerController, loginController };
+export { registerController, loginController, checkAuth };
