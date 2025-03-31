@@ -1,6 +1,7 @@
 // importing modules
 import {
   createLinkController,
+  getSingleLinkController,
   getUserLinksController,
 } from "@controllers/link.controller";
 import { authenticated } from "@middlewares/auth.middleware";
@@ -16,7 +17,7 @@ linkRouter.post("/create", authenticated, createLinkController);
 linkRouter.get("/mylinks", authenticated, getUserLinksController);
 
 // get single link data
-linkRouter.get("/link:shortLink", authenticated);
+linkRouter.get("/:shortLink", authenticated, getSingleLinkController);
 
 // export for external use
 export { linkRouter };

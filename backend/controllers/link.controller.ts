@@ -160,6 +160,8 @@ const getSingleLinkController = async (
   try {
     // get the shortlinkid from param
     const { shortLink } = req.params;
+
+    // return if shortlink not provided
     if (!shortLink) {
       const response: ApiResponse = {
         success: false,
@@ -168,6 +170,30 @@ const getSingleLinkController = async (
       res.status(404).json(response);
       return;
     }
+
+    // find the shortlink full data
+    const fullLinkData = await Link.findOne({
+      shortLink,
+    }).populate("user");
+
+    // return if shortlink not founded
+    if (!fullLinkData) {
+      const response: ApiResponse = {
+        success: false,
+        message: "Shortlink not founded in database",
+      };
+      res.status(404).json(response);
+      return;
+    }
+
+    // response fullLinkData
+    const response: ApiResponse = {
+      success: true,
+      message: "Shortlink founded",
+      data: fullLinkData,
+    };
+    res.status(200).json(response);
+    return;
   } catch (error) {
     logger.info(`Server error - ${error}`);
     const response: ApiResponse = {
