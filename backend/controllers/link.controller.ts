@@ -29,7 +29,9 @@ const createLinkController = async (
       const isLinkAlreadyAdded = await Link.findOne({ fullLink: link });
       if (isLinkAlreadyAdded) {
         // check if link added by this user
-        const isLinkAddedByThisUser = isLinkAlreadyAdded.user === req.user?.id;
+        const isLinkAddedByThisUser =
+          isLinkAlreadyAdded.user.toString() === req.user?.id.toString();
+
         // send conflict response if user already have this link
         if (isLinkAddedByThisUser) {
           const response: ApiResponse = {
