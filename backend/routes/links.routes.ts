@@ -1,6 +1,7 @@
 // importing modules
 import {
   createLinkController,
+  deleteSingleLinkController,
   getSingleLinkController,
   getUserLinksController,
 } from "@controllers/link.controller";
@@ -18,6 +19,9 @@ linkRouter.get("/mylinks", authenticated, getUserLinksController);
 
 // get single link data
 linkRouter.get("/:shortLink", authenticated, getSingleLinkController);
+
+// delete single link
+linkRouter.delete("/:linkId", authenticated, deleteSingleLinkController);
 
 // export for external use
 export { linkRouter };

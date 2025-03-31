@@ -205,9 +205,77 @@ const getSingleLinkController = async (
   }
 };
 
+// link delete controller
+const deleteSingleLinkController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    // get link id from param
+    const { linkId } = req.params;
+
+    // return if link id not provided
+    if (!linkId) {
+      const response: ApiResponse = {
+        success: false,
+        message: "link id not provided",
+      };
+      res.status(400).json(response);
+      return;
+    }
+
+    // find the link
+    const linkFromDB = await Link.findById(linkId);
+
+    if (!linkFromDB) {
+      const response: ApiResponse = {
+        success: false,
+        message: "link not founded",
+      };
+      res.status(404).json(response);
+      return;
+    }
+
+    // verify link owner
+    const verifyLinkOwner =
+      linkFromDB.user.toString() === req.user?.id.toString();
+
+    // return if not verified
+    if (!verifyLinkOwner) {
+      const response: ApiResponse = {
+        success: false,
+        message: "You are not that link owner",
+      };
+      res.status(401).json(response);
+      return;
+    }
+
+    // delete the link
+    await linkFromDB.deleteOne();
+
+    // send success response
+    const response: ApiResponse = {
+      success: false,
+      message: "Selected link deleted",
+      data: linkFromDB,
+    };
+    res.status(200).json(response);
+    return;
+  } catch (error) {
+    logger.info(`Server error - ${error}`);
+    const response: ApiResponse = {
+      success: false,
+      message: "Internal Server Failure",
+    };
+    res.status(500).json(response);
+    return;
+  }
+};
+
 // export controllers for external use
 export {
   createLinkController,
   getUserLinksController,
   getSingleLinkController,
+  deleteSingleLinkController,
 };
