@@ -5,7 +5,7 @@ import {
   loginController,
   checkAuthController,
 } from "@controllers/auth.controller";
-import { authenticated } from "middlewares/auth.middleware";
+import { authenticated } from "@middlewares/auth.middleware";
 
 // initializing auth router
 const authRouter = express.Router();

@@ -106,7 +106,10 @@ const getUserLinksController = async (
   res: Response
 ): Promise<void> => {
   try {
+    // get the user id from request
     const userId: ObjectId | undefined = req.user?.id;
+
+    // return if user id not found
     if (!userId) {
       const response: ApiResponse = {
         success: false,
@@ -115,8 +118,11 @@ const getUserLinksController = async (
       res.status(404).json(response);
       return;
     }
+
+    // find the links with this user id
     const links = await Link.find({ user: userId });
 
+    // return if no links founded
     if (!links) {
       const response: ApiResponse = {
         success: false,
@@ -125,13 +131,43 @@ const getUserLinksController = async (
       res.status(404).json(response);
       return;
     }
+
+    // response founded links
     const response: ApiResponse = {
       success: true,
-      message: "Links not found",
+      message: "Links founded",
       data: links,
     };
     res.status(200).json(response);
     return;
+  } catch (error) {
+    // handle error
+    logger.info(`Server error - ${error}`);
+    const response: ApiResponse = {
+      success: false,
+      message: "Internal Server Failure",
+    };
+    res.status(500).json(response);
+    return;
+  }
+};
+
+// get single link data
+const getSingleLinkController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    // get the shortlinkid from param
+    const { shortLink } = req.params;
+    if (!shortLink) {
+      const response: ApiResponse = {
+        success: false,
+        message: "Shortlink not provided",
+      };
+      res.status(404).json(response);
+      return;
+    }
   } catch (error) {
     logger.info(`Server error - ${error}`);
     const response: ApiResponse = {
@@ -144,4 +180,8 @@ const getUserLinksController = async (
 };
 
 // export controllers for external use
-export { createLinkController, getUserLinksController };
+export {
+  createLinkController,
+  getUserLinksController,
+  getSingleLinkController,
+};

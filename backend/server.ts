@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { linkRouter } from "@routes/links.routes";
+import errorHandler from "@middlewares/error.middleware";
 
 // initializing the server
 const server = express();
@@ -44,6 +45,9 @@ server.use(express.json());
 server.use(`${Config.API_ENDPOINT}/auth`, authRouter);
 // links router
 server.use(`${Config.API_ENDPOINT}/links`, linkRouter);
+
+// use error middleware
+server.use(errorHandler);
 
 // listening for request
 server.listen(Config.PORT, () => {
