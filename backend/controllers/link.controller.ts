@@ -13,6 +13,19 @@ interface ApiResponse {
   data?: object;
 }
 
+// declaring type for user in request
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        name: string;
+        email: string;
+        id: ObjectId;
+      };
+    }
+  }
+}
+
 // controller for link creation
 const createLinkController = async (
   req: Request,
@@ -87,5 +100,48 @@ const createLinkController = async (
   }
 };
 
+// get user links controller
+const getUserLinksController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId: ObjectId | undefined = req.user?.id;
+    if (!userId) {
+      const response: ApiResponse = {
+        success: false,
+        message: "User id not found",
+      };
+      res.status(404).json(response);
+      return;
+    }
+    const links = await Link.find({ user: userId });
+
+    if (!links) {
+      const response: ApiResponse = {
+        success: false,
+        message: "Links not found",
+      };
+      res.status(404).json(response);
+      return;
+    }
+    const response: ApiResponse = {
+      success: true,
+      message: "Links not found",
+      data: links,
+    };
+    res.status(200).json(response);
+    return;
+  } catch (error) {
+    logger.info(`Server error - ${error}`);
+    const response: ApiResponse = {
+      success: false,
+      message: "Internal Server Failure",
+    };
+    res.status(500).json(response);
+    return;
+  }
+};
+
 // export controllers for external use
-export { createLinkController };
+export { createLinkController, getUserLinksController };
