@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 // importing modules
 import { Request, Response } from "express";
 import { User } from "@models/user.model";
@@ -33,6 +34,7 @@ declare global {
       user?: {
         name: string;
         email: string;
+        id: ObjectId;
       };
     }
   }

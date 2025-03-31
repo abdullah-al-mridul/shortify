@@ -4,6 +4,7 @@ import { logger } from "@logs/logger";
 import { User } from "@models/user.model";
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { ObjectId } from "mongoose";
 
 // interface for api response
 interface ApiResponse {
@@ -18,6 +19,7 @@ declare global {
       user?: {
         name: string;
         email: string;
+        id: ObjectId;
       };
     }
   }
@@ -50,9 +52,11 @@ const authenticated = async (
           const userPayload: {
             name: string;
             email: string;
+            id: ObjectId;
           } = {
             name: isUserExist.name,
             email: isUserExist.email,
+            id: isUserExist._id,
           };
 
           // add user payload in request

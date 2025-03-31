@@ -1,5 +1,5 @@
 // importing modules
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, ObjectId } from "mongoose";
 import bcrypt from "bcryptjs";
 
 // declaring types
@@ -8,6 +8,7 @@ interface User extends Document {
   email: string;
   password: string;
   comparePassword: (hashedPassword: string) => Promise<boolean>;
+  _id: ObjectId;
 }
 
 // creating user schema
