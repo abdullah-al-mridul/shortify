@@ -1,11 +1,15 @@
 import { Link as LinkIcon } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
+import useAuthStore from "../store/authStore";
 
 const Layout: React.FC = () => {
   const location = useLocation();
   const isAuthPage = ["/login", "/register"].includes(location.pathname);
-
+  const { checkAuth } = useAuthStore();
+  useEffect(() => {
+    checkAuth();
+  }, []);
   return (
     <div className="min-h-screen bg-[#1B1B24] text-white">
       {/* Navigation */}

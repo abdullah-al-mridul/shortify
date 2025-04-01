@@ -1,49 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useLinkStore from "../store/linkStore";
+import useAuthStore from "../store/authStore";
 
-interface UserLink {
-  id: string;
-  fullLink: string;
-  shortLink: string;
-}
 const Home = () => {
   const [url, setUrl] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [authenticated] = useState(true);
-  const [userLinks, setUserLinks] = useState<UserLink[]>([
-    {
-      id: "1",
-      fullLink: "https://example.com/very/long/url/that/needs/shortening",
-      shortLink: "https://short.ify/abc123",
-    },
-    {
-      id: "2",
-      fullLink: "https://another-example.com/with/very/long/path",
-      shortLink: "https://short.ify/xyz789",
-    },
-  ]);
+  const { authUser: authenticated } = useAuthStore();
 
+  const { addLink, getLinks, links: userLinks, deleteLink } = useLinkStore();
+  useEffect(() => {
+    getLinks();
+  }, []);
+  useEffect(() => {
+    console.log(userLinks);
+  }, [userLinks]);
+  useEffect(() => {
+    console.log(authenticated);
+  }, [authenticated]);
   const handleShorten = async () => {
-    setIsLoading(true);
-    // TODO: Implement URL shortening logic
-    console.log("Shortening URL:", url);
-    setTimeout(() => {
-      setIsLoading(false);
-      // Add the new link to userLinks
-      const newLink: UserLink = {
-        id: Math.random().toString(36).substr(2, 9),
-        fullLink: url,
-        shortLink: `https://short.ify/${Math.random()
-          .toString(36)
-          .substr(2, 6)}`,
-      };
-      setUserLinks((prev) => [newLink, ...prev]);
-      setShortenedUrl(newLink.shortLink);
-    }, 1000);
+    addLink(url, setShortenedUrl);
   };
 
   const handleDelete = (id: string) => {
-    setUserLinks((prev) => prev.filter((link) => link.id !== id));
+    deleteLink(id);
   };
   return (
     <div className="bg-[#1B1B24]">
@@ -144,7 +124,7 @@ const Home = () => {
                   <div className="p-4 space-y-4">
                     {userLinks.map((link) => (
                       <div
-                        key={link.id}
+                        key={link._id}
                         className="bg-[#232332] p-4 rounded-lg border border-[#2A2A3C] hover:border-yellow-400/50 transition-all duration-300"
                       >
                         {/* Full Link */}
@@ -192,7 +172,7 @@ const Home = () => {
                         {/* Actions */}
                         <div className="flex justify-end">
                           <button
-                            onClick={() => handleDelete(link.id)}
+                            onClick={() => handleDelete(link._id)}
                             className="text-gray-400 hover:text-red-500 transition-colors duration-200"
                           >
                             <svg

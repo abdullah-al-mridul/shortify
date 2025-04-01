@@ -4,8 +4,9 @@ import axiosInstance from "../api/axios";
 
 // intializing interface for auth state
 interface AuthState {
+  checkingAuth: boolean;
   loading: boolean;
-  authUser: { name: string; email: string } | null;
+  authUser: { name: string; email: string; id?: string } | null;
   login: ({
     email,
     password,
@@ -13,10 +14,12 @@ interface AuthState {
     email: string;
     password: string;
   }) => Promise<void>;
+  checkAuth: () => Promise<void>;
 }
 
 // creating auth store
 const useAuthStore = create<AuthState>((set) => ({
+  checkingAuth: false,
   loading: false,
   authUser: null,
   login: async ({ email, password }) => {
@@ -26,11 +29,27 @@ const useAuthStore = create<AuthState>((set) => ({
         email,
         password,
       });
-      console.log(response);
+      set({
+        authUser: {
+          name: response.data.data.name,
+          email: response.data.data.email,
+        },
+      });
     } catch (error) {
       console.log(error);
     } finally {
       set({ loading: false });
+    }
+  },
+  checkAuth: async () => {
+    try {
+      set({ checkingAuth: true });
+      const response = await axiosInstance.get("/auth/me");
+      set({ authUser: response.data.data });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ checkingAuth: false });
     }
   },
 }));
