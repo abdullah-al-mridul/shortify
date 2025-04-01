@@ -16,7 +16,7 @@ interface AuthState {
 }
 
 // creating auth store
-const useAuthStore = create<AuthState>((set, get) => ({
+const useAuthStore = create<AuthState>((set) => ({
   loading: false,
   authUser: null,
   login: async ({ email, password }) => {
