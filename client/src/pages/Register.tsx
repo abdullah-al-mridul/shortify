@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Register: React.FC = () => {
@@ -8,8 +8,6 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement registration logic
-    console.log("Register:", { name, email, password });
   };
 
   return (

@@ -1,3 +1,4 @@
+import { Link as LinkIcon } from "lucide-react";
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 
@@ -13,7 +14,9 @@ const Layout: React.FC = () => {
           <div className="flex justify-between items-center">
             <Link to="/" className="text-xl font-bold flex items-center gap-2">
               <div className="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center">
-                <span className="text-black">{"{x}"}</span>
+                <span className="text-black">
+                  <LinkIcon />
+                </span>
               </div>
               <span className="text-yellow-400">Shortify</span>
             </Link>

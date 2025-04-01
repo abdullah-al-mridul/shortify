@@ -198,7 +198,7 @@ const loginController = async (req: Request, res: Response): Promise<void> => {
     res.cookie("auth_token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "none",
+      sameSite: true,
       maxAge: 1000 * 60 * 60 * 24,
     });
 

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useAuthStore from "../store/authStore";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, loading } = useAuthStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement login logic
-    console.log("Login:", { email, password });
+    login({ email, password });
   };
-
   return (
     <main className="max-w-md mx-auto px-4 py-12">
       <div className="text-center mb-8">
@@ -56,9 +56,18 @@ const Login: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-yellow-400 text-black rounded font-medium hover:bg-yellow-300 transition-all duration-300"
+            className={`w-full px-6 py-3 bg-yellow-400 text-black rounded font-medium hover:bg-yellow-300 transition-all duration-300 ${
+              loading ? "cursor-not-allowed opacity-50" : ""
+            }`}
+            disabled={loading}
           >
-            Sign In
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <div className="w-5 h-5 border-4 border-t-4 border-[#232332] border-dashed rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 
